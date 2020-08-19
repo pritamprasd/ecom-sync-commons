@@ -2,11 +2,7 @@ package com.pritamprasad.ecom.security;
 
 import com.netflix.discovery.EurekaClient;
 import com.pritamprasad.ecom.exception.InvalidTokenException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
@@ -21,12 +17,12 @@ public class TokenValidationFilter implements Filter{
 
     private EurekaClient discoveryClient;
 
-    private String authService;
+    private String serviceName;
 
-    public TokenValidationFilter(RestTemplate restTemplate, EurekaClient discoveryClient, String authService) {
+    public TokenValidationFilter(RestTemplate restTemplate, EurekaClient discoveryClient, String serviceName) {
         this.restTemplate = restTemplate;
         this.discoveryClient = discoveryClient;
-        this.authService = authService;
+        this.serviceName = serviceName;
     }
 
     @Override
@@ -38,7 +34,7 @@ public class TokenValidationFilter implements Filter{
             }
             try {
                 ResponseEntity<String> reponse = restTemplate.getForEntity(
-                        discoveryClient.getNextServerFromEureka(authService, false).getHomePageUrl() + "validate/" + req.getHeader("token"),
+                        discoveryClient.getNextServerFromEureka(serviceName, false).getHomePageUrl() + "validate/" + req.getHeader("token"),
                         String.class);
                 if (reponse.getStatusCode().is2xxSuccessful()) {
                     chain.doFilter(request, response);
