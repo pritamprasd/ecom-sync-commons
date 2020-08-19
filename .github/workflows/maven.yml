@@ -30,6 +30,4 @@ jobs:
         name: Package
         path: staging
     - name: Publish to GitHub Packages Apache Maven
-      run: mvn deploy -Dregistry=https://maven.pkg.github.com/pritamprasd -Dtoken=$GITHUB_TOKEN
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: mvn deploy -Dregistry=https://maven.pkg.github.com/pritamprasd -Dtoken={{ secrets.GITHUB_TOKEN }}
