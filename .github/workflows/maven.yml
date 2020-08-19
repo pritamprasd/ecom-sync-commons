@@ -29,5 +29,7 @@ jobs:
       with:
         name: Package
         path: staging
-    - name: Publish to GitHub Packages Apache Maven
-      run: mvn deploy
+    - name: Publish package
+      run: mvn -B deploy
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
